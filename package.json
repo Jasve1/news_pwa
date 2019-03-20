@@ -1,0 +1,25 @@
+{
+  "name": "news_pwa",
+  "version": "1.0.0",
+  "description": "An example of a progressive web app using the api newsapi.org",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jasve1/news_pwa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jasve1/news_pwa/issues"
+  },
+  "homepage": "https://github.com/Jasve1/news_pwa#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "web-push": "^3.3.3"
+  }
+}
