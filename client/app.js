@@ -1,9 +1,12 @@
-const apiKey = 'ccd5ca6c802d4e05af0e60f7b7fbaf81';
+require('dotenv').config();
+const apiKey = process.env.API_KEY;
 
 const main = document.querySelector('main');
 const sourceSelector = document.querySelector('#sourceSelector');
 
 const defaultSource = 'the-washington-post';
+
+const publicVapidKey = 'BMUACjClEvgSrJCs_TOagOb7Jafi_jl9CfiowWl_4wTGcoWs_y8Dmhe5N8eVIrNhkQYl2P3QyIa2Smrgml7Mwmo'
 
 window.addEventListener('load', async e => {
     updateNews();
@@ -16,13 +19,43 @@ window.addEventListener('load', async e => {
     });
 
     if('serviceWorker' in navigator){
-        try{
-            navigator.serviceWorker.register('sw.js');
-            console.log('A serviceworker has been registered');
-        } catch (error){
-            console.log('Registratio failed');
+        try {
+          const register = await navigator.serviceWorker.register('sw.js');
+          console.log('A serviceworker has been registered');
+
+          const subscription = await register.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+          });
+          console.log('Push registered');
+
+          await fetch('/subscribe', {
+              method: 'POST',
+              body: JSON.stringify(subscription),
+              headers: {
+                  'content-type': 'application/json'
+              }
+          });
+          console.log('Push sent');
+        } catch (error) {
+          console.log('Registration failed');
         }
     }
+
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+          .replace(/-/g, '+')
+          .replace(/_/g, '/');
+      
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+      
+        for (let i = 0; i < rawData.length; ++i) {
+          outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+      }
 });
 
 async function updateSources(){
@@ -52,3 +85,6 @@ function createArticle(article){
         </div>
     `;
 }
+
+
+

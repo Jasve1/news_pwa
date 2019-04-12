@@ -1,0 +1,10 @@
+{
+    "articles": [
+        {
+            "title": "You are offline",
+            "description": "You are offline so unfortunately there is no news to show. We hope that you enjoy this picture instead.",
+            "urlToImage": "./images/fallbackImg.jpg",
+            "url": ""
+        }
+    ]
+}
